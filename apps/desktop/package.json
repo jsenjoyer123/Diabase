@@ -6,8 +6,23 @@
   "license": "MIT",
   "type": "module",
   "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "e2e": "electron-vite build && playwright test"
+  },
   "dependencies": {
     "@diabase/protocol": "*",
     "@diabase/kernel": "*"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "electron": "^45.0.0",
+    "electron-vite": "^6.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "vite": "^8.3.5"
   }
 }

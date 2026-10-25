@@ -10,3 +10,7 @@ coverage/
 .diabase/cache/
 # Scratch vaults created by tests / dev runs
 .tmp/
+# Electron app build output and Playwright artifacts
+out/
+test-results/
+playwright-report/
