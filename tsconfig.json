@@ -4,6 +4,7 @@
     "packages/*/src",
     "plugins/*/src",
     "apps/*/src",
+    "apps/*/*.config.ts",
     "packages/*/test",
     "plugins/*/test",
     "apps/*/test"
