@@ -1,0 +1,3 @@
+# Byte-exact fixtures: git must never normalise their line endings or encoding.
+sample/Notes/CRLF-Line-Endings.md -text
+sample/Notes/UTF8-BOM.md -text

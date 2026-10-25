@@ -2,13 +2,20 @@
   "name": "@diabase/plugin-genui",
   "version": "0.0.0",
   "private": true,
-  "description": "[main+renderer] Generative UI task agent and its panel",
+  "description": "[main+renderer] Generative UI task agent, repository analyzer, and React renderer",
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./renderer": "./src/renderer.tsx",
+    "./scanner": "./src/repo-scanner.ts"
   },
   "dependencies": {
-    "@diabase/protocol": "*"
+    "@diabase/kernel": "*",
+    "@diabase/plugin-llm": "*",
+    "@diabase/protocol": "*",
+    "@diabase/ui": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

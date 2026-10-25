@@ -97,7 +97,15 @@ export interface VaultService {
   updateFrontmatter(path: VaultPath, ops: FrontmatterOp[], options?: WriteOptions): Promise<WriteResult>
 }
 
-export type VaultErrorCode = 'ENOENT' | 'EEXIST' | 'EOUTSIDE' | 'EINVALIDPATH' | 'EISDIR' | 'ENOTDIR'
+export type VaultErrorCode =
+  | 'ENOENT'
+  | 'EEXIST'
+  | 'EOUTSIDE'
+  | 'EINVALIDPATH'
+  | 'EISDIR'
+  | 'ENOTDIR'
+  /** `updateFrontmatter` on a note whose existing frontmatter is not a valid YAML mapping (left untouched). */
+  | 'EPARSE'
 
 export interface VaultErrorShape {
   name: 'VaultError'

@@ -9,6 +9,9 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@diabase/protocol": "*"
+    "@diabase/kernel": "*",
+    "@diabase/markdown": "*",
+    "@diabase/protocol": "*",
+    "zod": "^4.6.7"
   }
 }
