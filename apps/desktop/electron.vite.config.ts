@@ -37,7 +37,7 @@ export default defineConfig({
     build: {
       externalizeDeps: { exclude: workspaceDeps },
       // Sandboxed preloads cannot be ES modules, even though the package is "type": "module".
-      rolldownOptions: { output: { format: 'cjs' } },
+      rollupOptions: { output: { format: 'cjs' } },
     },
   },
   renderer: {
