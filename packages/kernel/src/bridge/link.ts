@@ -52,6 +52,9 @@ interface ImportState {
   remote: string
   local: string
   handle?: ProxyHandle
+  /** Last processed generation is scoped to a peer session. */
+  session?: string
+  generation?: number
   /** Serializes up/down transitions so a fast down -> up never double-registers the service. */
   chain: Promise<void>
 }
@@ -323,6 +326,8 @@ export class BridgeLink {
     const wasConnected = this.peer !== null
     this.peer = null
     for (const imp of this.imports) {
+      imp.session = undefined
+      imp.generation = undefined
       const handle = imp.handle
       if (!handle) continue
       // Immediate: calls fail and dependents leave now; the awaited part follows on the chain.
@@ -463,11 +468,19 @@ export class BridgeLink {
     const methods = message.methods.filter(isMethodName)
     this.enqueue(imp, async () => {
       if (!this.alive(session) || this.closing) return
+      if (imp.session !== session) {
+        imp.session = session
+        imp.generation = undefined
+      }
+      if (imp.generation !== undefined && message.gen <= imp.generation) {
+        this.logger.debug(`ignoring stale up for "${message.name}" generation ${message.gen}`)
+        return
+      }
       if (imp.handle) {
-        if (imp.handle.gen === message.gen) return
         await this.withdraw(imp, 'ESERVICEDOWN')
         if (!this.alive(session) || this.closing) return
       }
+      imp.generation = message.gen
       this.provide(imp, message.gen, methods)
     })
   }
@@ -479,6 +492,12 @@ export class BridgeLink {
       return
     }
     this.enqueue(imp, async () => {
+      if (!this.alive(session) || this.closing) return
+      if (imp.session !== session) {
+        imp.session = session
+        imp.generation = undefined
+      }
+      if (imp.generation === undefined || message.gen > imp.generation) imp.generation = message.gen
       if (imp.handle?.gen === message.gen) await this.withdraw(imp, 'ESERVICEDOWN')
       if (this.alive(session)) this.tryPost({ t: 'released', name: message.name, gen: message.gen })
     })

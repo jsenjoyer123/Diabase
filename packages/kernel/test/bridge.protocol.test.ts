@@ -297,6 +297,21 @@ describe('importing from a hand-driven peer', () => {
     expect(count('apply')).toBe(count('dispose:end') + 1)
   })
 
+  it('does not resurrect a proxy from a stale or already withdrawn generation', async () => {
+    const log = await importing()
+    up(3)
+    await until(() => log.length, 'first apply')
+    peer.send({ t: 'down', name: 'slots', gen: 3 })
+    await until(() => peer.of('released').length, 'release of generation 3')
+    expect(pair.main.get('slots')).toBeUndefined()
+
+    up(2)
+    up(3) // A duplicate announcement after down is stale too.
+    await flush()
+    expect(pair.main.get('slots')).toBeUndefined()
+    expect(log).toEqual(['apply', 'dispose:start', 'dispose:end'])
+  })
+
   it('rejects in-flight calls with ESERVICEDOWN after the drain, and keeps them callable during it', async () => {
     const log = await importing({ name: 'slow' })
     up(1)
