@@ -205,6 +205,17 @@ Subagents should be assigned only when their contribution is expected to outweig
 
 Small tasks may be completed directly by an existing agent without creating additional agents or teams.
 
+## 8a. Model Selection
+
+This is the default for every Teammate (team lead), including newly created ones.
+
+- **Subagents use the `haiku` model by default.** When spawning a subagent, set `model: "haiku"`.
+- **Use `sonnet` only for genuinely tough tasks.** Examples: subtle concurrency or lifecycle work, tricky algorithms, security-sensitive code, or a task where a `haiku` attempt has clearly failed.
+- **Never use `opus` for subagents.**
+- **Teammates themselves run on the session's default model** unless the user says otherwise.
+
+Cheaper subagents need tighter briefs and closer review. Teammates must keep subagent tasks concrete and self-contained, and must verify typecheck and tests themselves before integrating.
+
 ## 9. Efficiency Rules
 
 - Prefer delegation for substantial implementation work.
