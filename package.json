@@ -19,6 +19,7 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",
+    "e2e": "npm run e2e --workspace @diabase/desktop",
     "check": "npm run typecheck && npm run test"
   },
   "dependencies": {
