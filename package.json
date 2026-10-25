@@ -20,7 +20,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "npm run e2e --workspace @diabase/desktop",
-    "check": "npm run typecheck && npm run test"
+    "check": "npm run typecheck && npm run test",
+    "dev:electron": "npm run dev:electron --workspace @diabase/desktop",
+    "dev:web": "npm run dev --workspace @diabase/desktop",
+    "build:electron": "npm run build:electron --workspace @diabase/desktop"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
