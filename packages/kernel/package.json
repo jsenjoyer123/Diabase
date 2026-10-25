@@ -6,10 +6,12 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./main": "./src/main/index.ts"
   },
   "dependencies": {
     "@diabase/protocol": "*",
-    "cordis": "4.0.0-rc.12"
+    "cordis": "4.0.0-rc.12",
+    "yaml": "^2.9.1"
   }
 }
