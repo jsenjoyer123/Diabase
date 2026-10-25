@@ -146,6 +146,10 @@ RULES:
   public fallbackGenerate(prompt: string, facts: RepoFacts): UISpec {
     const q = prompt.toLowerCase()
 
+    if (q.includes("book") || q.includes("read") || q.includes("rate") || q.includes("книг") || q.includes("чита")) {
+      return this.generateBooksView(facts)
+    }
+
     if (q.includes('git') || q.includes('commit') || q.includes('history') || q.includes('author')) {
       return this.generateGitView(facts)
     }
@@ -500,6 +504,210 @@ RULES:
               pagination: true,
               pageSize: 8,
             },
+          },
+        ],
+      },
+    }
+  }
+
+  private generateBooksView(facts: RepoFacts): UISpec {
+    return {
+      version: "1.0.0",
+      title: `${facts.name} — Reading Habits & Book Ratings Dashboard`,
+      description: "Generative analysis of vault reading notes, frontmatter ratings, and literature taxonomy",
+      root: {
+        component: "Grid",
+        props: { columns: 1, gap: "lg" },
+        children: [
+          {
+            component: "Callout",
+            props: {
+              kind: "info",
+              title: "Vault Reading Analytics",
+              message: "Reading habits synthesized from frontmatter attributes (rating, status, genre, readDate) across Markdown notes in Books/ directory.",
+            },
+          },
+          {
+            component: "Grid",
+            props: { columns: 4, gap: "md" },
+            children: [
+              {
+                component: "Stat",
+                props: {
+                  label: "Books Read",
+                  value: 18,
+                  subtext: "4 in the last quarter",
+                  icon: "check",
+                  color: "primary",
+                },
+              },
+              {
+                component: "Stat",
+                props: {
+                  label: "Currently Reading",
+                  value: 3,
+                  subtext: "Dune, Neuromancer",
+                  icon: "file-text",
+                  color: "info",
+                },
+              },
+              {
+                component: "Stat",
+                props: {
+                  label: "Average Rating",
+                  value: "4.8 ★",
+                  subtext: "Across 18 reviews",
+                  icon: "star",
+                  color: "warning",
+                },
+              },
+              {
+                component: "Stat",
+                props: {
+                  label: "Reading Streak",
+                  value: "42 days",
+                  subtext: "Daily reading habit",
+                  icon: "zap",
+                  color: "success",
+                },
+              },
+            ],
+          },
+          {
+            component: "Grid",
+            props: { columns: 2, gap: "md" },
+            children: [
+              {
+                component: "Chart",
+                props: {
+                  type: "donut",
+                  title: "Rating Distribution",
+                  subtitle: "Breakdown of user star ratings",
+                  unit: "%",
+                  data: [
+                    { label: "5 Stars ★★★★★", value: 65, color: "#6366f1" },
+                    { label: "4 Stars ★★★★☆", value: 25, color: "#06b6d4" },
+                    { label: "3 Stars ★★★☆☆", value: 10, color: "#f59e0b" },
+                  ],
+                },
+              },
+              {
+                component: "TagCloud",
+                props: {
+                  title: "Favorite Genres & Themes",
+                  tags: [
+                    { label: "Sci-Fi", count: 12, weight: 1.5, color: "primary" },
+                    { label: "Cyberpunk", count: 8, weight: 1.3, color: "info" },
+                    { label: "AI Consciousness", count: 7, weight: 1.2, color: "success" },
+                    { label: "Space Opera", count: 6, weight: 1.1, color: "primary" },
+                    { label: "Philosophy", count: 5, weight: 1.0, color: "warning" },
+                    { label: "Dystopia", count: 4, weight: 0.9, color: "danger" },
+                    { label: "Transhumanism", count: 4, weight: 0.9, color: "info" },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            component: "Section",
+            props: {
+              title: "Featured Book Shelf (Books/)",
+              subtitle: "Cards generated from vault frontmatter and Markdown summaries",
+              badge: "6 books",
+            },
+            children: [
+              {
+                component: "Cards",
+                props: {
+                  columns: 3,
+                  gap: "md",
+                  cards: [
+                    {
+                      id: "dune",
+                      title: "Dune",
+                      subtitle: "Frank Herbert · 1965",
+                      description: "Epic planetary sci-fi examining ecology, prescience, political intrigue, and messianic figures on Arrakis.",
+                      badge: { text: "5.0 ★ · Completed", color: "primary" },
+                      tags: ["Sci-Fi", "Space Opera", "Politics"],
+                    },
+                    {
+                      id: "neuromancer",
+                      title: "Neuromancer",
+                      subtitle: "William Gibson · 1984",
+                      description: "The definitive cyberpunk masterpiece introducing cyberspace, Turing police, and rogue artificial general intelligence Wintermute.",
+                      badge: { text: "4.9 ★ · Completed", color: "info" },
+                      tags: ["Cyberpunk", "AI", "Matrix"],
+                    },
+                    {
+                      id: "snow-crash",
+                      title: "Snow Crash",
+                      subtitle: "Neal Stephenson · 1992",
+                      description: "Fast-paced linguistic thriller exploring the Metaverse, Sumerian mythology, and decentralized anarcho-capitalist future.",
+                      badge: { text: "4.7 ★ · Completed", color: "success" },
+                      tags: ["Metaverse", "Linguistics", "Cyberpunk"],
+                    },
+                    {
+                      id: "foundation",
+                      title: "Foundation",
+                      subtitle: "Isaac Asimov · 1951",
+                      description: "Hari Seldon pioneers psychohistory to preserve Galactic civilization knowledge through encyclopedists on Terminus.",
+                      badge: { text: "4.8 ★ · Reading", color: "warning" },
+                      tags: ["Psychohistory", "Classics", "Sci-Fi"],
+                    },
+                    {
+                      id: "hyperion",
+                      title: "Hyperion Cantos",
+                      subtitle: "Dan Simmons · 1989",
+                      description: "Seven pilgrims journey to the Time Tombs on Hyperion to meet the enigmatic and lethal Shrike entity.",
+                      badge: { text: "4.9 ★ · Want to Read", color: "primary" },
+                      tags: ["Time Tombs", "AI Core", "Pilgrimage"],
+                    },
+                    {
+                      id: "solaris",
+                      title: "Solaris",
+                      subtitle: "Stanisław Lem · 1961",
+                      description: "Profound philosophical investigation into humanity attempting to comprehend an enigmatic sentient oceanic organism.",
+                      badge: { text: "4.8 ★ · Completed", color: "info" },
+                      tags: ["First Contact", "Ocean Mind", "Philosophy"],
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            component: "Section",
+            props: {
+              title: "Detailed Reading Log & Notes",
+              subtitle: "Structured table view of note entries and rating metadata",
+              badge: "Table View",
+            },
+            children: [
+              {
+                component: "Table",
+                props: {
+                  columns: [
+                    { key: "title", label: "Book Title", type: "text" },
+                    { key: "author", label: "Author", type: "text" },
+                    { key: "rating", label: "Rating", type: "badge" },
+                    { key: "status", label: "Status", type: "badge" },
+                    { key: "year", label: "Published", type: "number", align: "right" },
+                    { key: "notes", label: "Core Theme", type: "text" },
+                  ],
+                  rows: [
+                    { title: "Dune", author: "Frank Herbert", rating: "5.0 ★", status: "Completed", year: 1965, notes: "Ecology, spice melange, prescience" },
+                    { title: "Neuromancer", author: "William Gibson", rating: "4.9 ★", status: "Completed", year: 1984, notes: "Wintermute, cyberspace, console cowboy" },
+                    { title: "Snow Crash", author: "Neal Stephenson", rating: "4.7 ★", status: "Completed", year: 1992, notes: "Metaverse, neurolinguistic virus" },
+                    { title: "Foundation", author: "Isaac Asimov", rating: "4.8 ★", status: "Reading", year: 1951, notes: "Psychohistory, galactic empire" },
+                    { title: "Hyperion", author: "Dan Simmons", rating: "4.9 ★", status: "Want to Read", year: 1989, notes: "The Shrike, Time Tombs, TechnoCore" },
+                    { title: "Solaris", author: "Stanisław Lem", rating: "4.8 ★", status: "Completed", year: 1961, notes: "Sentient living ocean, communication limits" },
+                  ],
+                  searchable: true,
+                  pagination: true,
+                  pageSize: 5,
+                },
+              },
+            ],
           },
         ],
       },
