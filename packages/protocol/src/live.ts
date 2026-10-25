@@ -20,10 +20,53 @@ export type BuildResult =
   | { ok: false; errors: Diagnostic[]; warnings: Diagnostic[] }
 
 export interface BundlerService {
-  /** ESM output; bare imports outside `sharedModules()` are build errors. */
+  /**
+   * CommonJS factory bundle (format: `plugins/bundler/README.md`); bare imports outside
+   * `sharedModules()` are build errors. Never rejects for errors in the sources.
+   */
   build(input: BuildInput): Promise<BuildResult>
   /** Bare specifiers the renderer host provides to runtime bundles (react, @diabase/sdk, ...). */
   sharedModules(): string[]
+}
+
+/**
+ * Bare specifiers the renderer host provides to runtime bundles through its frozen module
+ * table. Every other bare import (npm packages, Node built-ins, `cordis`) is a build error;
+ * blocks reach Cordis, the UI kit and services only through `@diabase/sdk`.
+ */
+export const SHARED_MODULES = Object.freeze([
+  'react',
+  'react/jsx-runtime',
+  'react-dom',
+  'react-dom/client',
+  'zod',
+  '@diabase/protocol',
+  '@diabase/sdk',
+] as const)
+export type SharedModule = (typeof SHARED_MODULES)[number]
+
+/** Global the renderer host installs before evaluating a bundle. */
+export const BUNDLE_GLOBAL = '__diabase_modules__'
+
+/** CommonJS module body produced by the bundler; `require` answers only `SHARED_MODULES`. */
+export type BundleFactory = (
+  require: (specifier: string) => unknown,
+  module: { exports: Record<string, unknown> },
+  exports: Record<string, unknown>,
+) => void
+
+/** Argument of `__diabase_modules__.load(...)`, the first statement every bundle executes. */
+export interface BundleRegistration {
+  /** Source identity: the vault dir for dir builds, `draft:<entry>` for drafts. Informational. */
+  id: string
+  /** `BuildResult.hash` of the build that produced this bundle; the host matches on it. */
+  hash: string
+  factory: BundleFactory
+}
+
+/** Shape of `globalThis.__diabase_modules__` in the renderer. */
+export interface BundleModuleHost {
+  load(registration: BundleRegistration): void
 }
 
 export type HotState = 'mounted' | 'failed' | 'disposed'
