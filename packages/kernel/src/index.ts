@@ -1,6 +1,7 @@
 // The only module in Diabase that imports `cordis` directly. Every plugin imports
 // the kernel from here, so swapping to a vendored Cordis copy is a one-file change.
 // Pinned to cordis@4.0.0-rc.12 (see docs/architecture.md §2).
+import type { InspectorService } from './inspector.ts'
 import type {
   BlockRegistryService,
   BundlerService,
@@ -15,6 +16,7 @@ import type {
 
 export * from 'cordis'
 export { Context as default } from 'cordis'
+export * from './inspector.ts'
 
 declare module 'cordis' {
   // Services are only present on a context that injected them (Cordis throws otherwise).
@@ -29,6 +31,7 @@ declare module 'cordis' {
     slots: RuntimeSlotsService
     blocks: BlockRegistryService
     hot: HotService
+    inspector: InspectorService
   }
 
   interface Events extends DiabaseEvents {}
