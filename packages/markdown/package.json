@@ -9,6 +9,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@diabase/protocol": "*"
+    "@diabase/protocol": "*",
+    "yaml": "^2.9.1"
   }
 }
