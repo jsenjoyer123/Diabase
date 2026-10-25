@@ -205,10 +205,13 @@ Subagents should be assigned only when their contribution is expected to outweig
 
 Small tasks may be completed directly by an existing agent without creating additional agents or teams.
 
-## 8a. Model Selection
+## 8a. Spawning Subagents, Model Selection, and Pushing
 
-This is the default for every Teammate (team lead), including newly created ones.
+These are the defaults for every Teammate (team lead), including newly created ones.
 
+- **Teammates create subagents, never teammates.** Only the Orchestrator creates teammates. Call the Agent tool **without the `name` parameter**; a named spawn creates a teammate. Subagents run in the background and report back to the agent that spawned them.
+- **Teammates do not write implementation code.** They plan, define interfaces, write subagent briefs, review, and merge. Direct edits are limited to trivial fixes (see Principle 1).
+- **Push after committing.** Subagents push their `agent/<team>/<task>` branch after each commit, and Teammates push `team/<scope>` after each milestone merge (`git push -u origin <branch>`). Only the Orchestrator pushes `integration` and `main`. Never force-push. The remote is public: never commit secrets or personal data.
 - **Subagents use the `haiku` model by default.** When spawning a subagent, set `model: "haiku"`.
 - **Use `sonnet` only for genuinely tough tasks.** Examples: subtle concurrency or lifecycle work, tricky algorithms, security-sensitive code, or a task where a `haiku` attempt has clearly failed.
 - **Never use `opus` for subagents.**
