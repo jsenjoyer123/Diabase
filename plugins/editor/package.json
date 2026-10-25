@@ -2,13 +2,18 @@
   "name": "@diabase/plugin-editor",
   "version": "0.0.0",
   "private": true,
-  "description": "[renderer] Markdown editor block (CodeMirror 6, ported from Noteriv)",
+  "description": "[renderer] Block core/editor: Markdown editor block mounted into any workspace slot",
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.tsx"
   },
   "dependencies": {
-    "@diabase/protocol": "*"
+    "@diabase/kernel": "*",
+    "@diabase/plugin-blocks": "*",
+    "@diabase/protocol": "*",
+    "@diabase/ui": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

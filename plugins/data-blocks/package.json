@@ -2,13 +2,18 @@
   "name": "@diabase/plugin-data-blocks",
   "version": "0.0.0",
   "private": true,
-  "description": "[renderer] Generic query-backed blocks: table, list, cards, stat, chart, properties",
+  "description": "[renderer] Data blocks core/table, core/cards, core/chart, core/stat, core/properties",
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.tsx"
   },
   "dependencies": {
-    "@diabase/protocol": "*"
+    "@diabase/kernel": "*",
+    "@diabase/plugin-blocks": "*",
+    "@diabase/protocol": "*",
+    "@diabase/ui": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

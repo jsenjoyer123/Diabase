@@ -2,13 +2,16 @@
   "name": "@diabase/plugin-blocks",
   "version": "0.0.0",
   "private": true,
-  "description": "[renderer] Block registry, subset/compose, block SDK hooks, Markdown fence embedding",
+  "description": "[renderer] Block registry, subset/compose, block SDK hooks",
   "license": "MIT",
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@diabase/protocol": "*"
+    "@diabase/kernel": "*",
+    "@diabase/protocol": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

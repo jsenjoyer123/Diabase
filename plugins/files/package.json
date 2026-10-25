@@ -2,13 +2,18 @@
   "name": "@diabase/plugin-files",
   "version": "0.0.0",
   "private": true,
-  "description": "[renderer] File navigation and search blocks: tree, quick open, search, backlinks",
+  "description": "[renderer] Blocks files/tree, files/quick-open, files/search",
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.tsx"
   },
   "dependencies": {
-    "@diabase/protocol": "*"
+    "@diabase/kernel": "*",
+    "@diabase/plugin-blocks": "*",
+    "@diabase/protocol": "*",
+    "@diabase/ui": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

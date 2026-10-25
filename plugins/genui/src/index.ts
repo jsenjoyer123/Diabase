@@ -115,3 +115,4 @@ export default function apply(ctx: Context) {
   const service = new GenUIServiceImpl(ctx)
   ctx.provide('genui', service)
 }
+export { GenUIPanelDefinition, registerGenUIPanel } from './panel.tsx'

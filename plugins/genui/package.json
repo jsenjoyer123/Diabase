@@ -8,6 +8,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./renderer": "./src/renderer.tsx",
+    "./panel": "./src/panel.tsx",
     "./scanner": "./src/repo-scanner.ts"
   },
   "dependencies": {
