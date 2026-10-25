@@ -38,3 +38,30 @@ export const PluginManifest = z.object({
     .default({ blocks: [], slots: [], fences: [], services: [] }),
 })
 export type PluginManifest = z.infer<typeof PluginManifest>
+
+/**
+ * One entry of `plugins:` in `.diabase/config.yml`. Plugins not listed are installed but
+ * disabled: main-process code never runs without an explicit entry.
+ *
+ * ```yaml
+ * plugins:
+ *   my-plugin:            # listing a plugin enables it
+ *     config:             # passed to the plugin as its Cordis config
+ *       greeting: hello
+ *   ns/other-plugin:
+ *     enabled: false      # installed, but kept off
+ * ```
+ */
+export const PluginEntryConfig = z.object({
+  /** Default true: listing a plugin enables it. */
+  enabled: z.boolean().default(true),
+  /** Passed as the Cordis plugin config (validated by the plugin's own `Config` schema, if any). */
+  config: z.record(z.string(), z.unknown()).optional(),
+})
+export type PluginEntryConfig = z.infer<typeof PluginEntryConfig>
+
+/** `.diabase/config.yml`. A missing or empty file means `{ plugins: {} }`; unknown top-level keys are kept. */
+export const DiabaseConfig = z.looseObject({
+  plugins: z.record(z.string(), PluginEntryConfig).default({}),
+})
+export type DiabaseConfig = z.infer<typeof DiabaseConfig>
