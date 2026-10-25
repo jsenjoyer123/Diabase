@@ -4,8 +4,14 @@ import type { LayoutOp } from './layout.ts'
 import type { NoteQuery } from './query.ts'
 import type { VaultPath } from './vault.ts'
 
+export * from './genui-spec.ts'
+
+import type { UISpec } from './genui-spec.ts'
+
 export interface GenUITask {
   prompt: string
+  /** Target repository path to analyze (defaults to current project). */
+  repoPath?: string
   /** Edit the current workspace, or create a new one (default). */
   target?: { kind: 'new' } | { kind: 'current' } | { kind: 'workspace'; path: VaultPath }
 }
@@ -34,6 +40,7 @@ export type GenUIEvent =
   | { runId: string; type: 'status'; status: GenUIRunStatus; message?: string }
   | { runId: string; type: 'plan'; plan: GenUIPlan }
   | { runId: string; type: 'item'; itemId: string; state: 'started' | 'done' | 'failed'; message?: string }
+  | { runId: string; type: 'spec'; spec: UISpec }
   | { runId: string; type: 'block'; manifest: BlockManifest }
   | { runId: string; type: 'layout'; ops: LayoutOp[] }
   | { runId: string; type: 'log'; level: 'debug' | 'info' | 'warn' | 'error'; message: string }
@@ -45,12 +52,15 @@ export interface GenUIRunSummary {
   startedAt: number
   /** Workspace written by the run, if any. */
   workspace?: VaultPath
+  /** Generated UI specification, if run succeeded. */
+  spec?: UISpec
   /** Vault paths created or modified (for revert). */
   touched: VaultPath[]
 }
 
 export interface GenUIService {
-  run(task: GenUITask): Promise<{ runId: string }>
+  run(task: GenUITask): Promise<{ runId: string; spec?: UISpec }>
+  generateSpec(task: GenUITask): Promise<UISpec>
   cancel(runId: string): Promise<void>
   /** Restore every file the run touched and the previous workspace. */
   revert(runId: string): Promise<void>
