@@ -12,9 +12,12 @@ import type {
   SearchService,
   VaultService,
 } from '@diabase/protocol'
+import type { BridgeStatus } from './bridge/index.ts'
 
 export * from 'cordis'
 export { Context as default } from 'cordis'
+export * from './remote.ts'
+export * from './bridge/index.ts'
 
 declare module 'cordis' {
   // Services are only present on a context that injected them (Cordis throws otherwise).
@@ -31,5 +34,11 @@ declare module 'cordis' {
     hot: HotService
   }
 
-  interface Events extends DiabaseEvents {}
+  interface Events extends DiabaseEvents, KernelEvents {}
+}
+
+/** Events the kernel itself emits on the local context. */
+export interface KernelEvents {
+  /** An IPC bridge connected, disconnected, or one of its services went up or down. */
+  'bridge/status'(status: BridgeStatus): void
 }
