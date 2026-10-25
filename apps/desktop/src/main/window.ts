@@ -34,6 +34,13 @@ export function createMainWindow(options: WindowOptions): BrowserWindow {
     },
   })
   windows.add(window)
+  window.webContents.on("console-message", (event: any, ...rest: any[]) => {
+    const msg = (typeof event === "object" && event?.message) ? event.message : (rest[1] || event);
+    console.log(`[Renderer Console] ${msg}`);
+  });
+  window.webContents.on("did-fail-load", (_e, code, desc, url) => {
+    console.error(`[Renderer did-fail-load] ${code} ${desc} ${url}`);
+  });
   window.once('closed', () => windows.delete(window))
   if (!options.hidden) window.once('ready-to-show', () => window.show())
 

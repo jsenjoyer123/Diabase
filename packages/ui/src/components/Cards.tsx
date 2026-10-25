@@ -2,7 +2,9 @@ import type { FC } from 'react'
 import type { CardsProps } from '@diabase/protocol'
 import { Icon } from '../icons.tsx'
 
-export const Cards: FC<CardsProps> = ({ title, columns = 3, items }) => {
+export const Cards: FC<CardsProps> = (props) => {
+  const { title, columns = 3 } = props;
+  const items = props.items || (props as any).cards || [];
   return (
     <div style={{ width: '100%' }}>
       {title && (
@@ -30,7 +32,11 @@ export const Cards: FC<CardsProps> = ({ title, columns = 3, items }) => {
                     <Icon name={item.icon} size={16} />
                   </div>
                 )}
-                {item.badge && <span className="db-badge db-badge-primary">{item.badge}</span>}
+                {item.badge && (
+    <span className={`db-badge db-badge-${typeof item.badge === "object" && (item.badge as any).color ? (item.badge as any).color : "primary"}`}>
+      {typeof item.badge === "object" ? (item.badge as any).text : String(item.badge)}
+    </span>
+  )}
               </div>
 
               {item.description && <div className="db-card-description">{item.description}</div>}

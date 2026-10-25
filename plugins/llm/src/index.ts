@@ -18,8 +18,10 @@ export class LLMService {
   public readonly defaultModel: string
 
   constructor(config: LLMConfig = {}) {
-    const key = config.apiKey || process.env.ANTHROPIC_API_KEY
-    this.defaultModel = config.model || process.env.ANTHROPIC_MODEL || 'claude-3-opus-20240229'
+    const envKey = typeof process !== "undefined" ? process.env?.ANTHROPIC_API_KEY : undefined
+    const envModel = typeof process !== "undefined" ? process.env?.ANTHROPIC_MODEL : undefined
+    const key = config.apiKey || envKey
+    this.defaultModel = config.model || envModel || "claude-3-opus-20240229"
 
     if (key) {
       this.client = new Anthropic({ apiKey: key })
@@ -596,13 +598,13 @@ RULES:
                 props: {
                   title: "Favorite Genres & Themes",
                   tags: [
-                    { label: "Sci-Fi", count: 12, weight: 1.5, color: "primary" },
-                    { label: "Cyberpunk", count: 8, weight: 1.3, color: "info" },
-                    { label: "AI Consciousness", count: 7, weight: 1.2, color: "success" },
-                    { label: "Space Opera", count: 6, weight: 1.1, color: "primary" },
-                    { label: "Philosophy", count: 5, weight: 1.0, color: "warning" },
-                    { label: "Dystopia", count: 4, weight: 0.9, color: "danger" },
-                    { label: "Transhumanism", count: 4, weight: 0.9, color: "info" },
+                    { name: "Sci-Fi", count: 12, weight: 1.5, color: "primary" },
+                    { name: "Cyberpunk", count: 8, weight: 1.3, color: "info" },
+                    { name: "AI Consciousness", count: 7, weight: 1.2, color: "success" },
+                    { name: "Space Opera", count: 6, weight: 1.1, color: "primary" },
+                    { name: "Philosophy", count: 5, weight: 1.0, color: "warning" },
+                    { name: "Dystopia", count: 4, weight: 0.9, color: "danger" },
+                    { name: "Transhumanism", count: 4, weight: 0.9, color: "info" },
                   ],
                 },
               },
@@ -621,7 +623,7 @@ RULES:
                 props: {
                   columns: 3,
                   gap: "md",
-                  cards: [
+                  items: [
                     {
                       id: "dune",
                       title: "Dune",

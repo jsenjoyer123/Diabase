@@ -20,7 +20,11 @@ export const Section: FC<SectionProps & { children?: ReactNode }> = ({
         <div className="db-section-title-wrap">
           <div className="db-section-title">
             <span>{title}</span>
-            {badge && <span className="db-badge db-badge-primary">{badge}</span>}
+            {badge && (
+    <span className={`db-badge db-badge-${typeof badge === "object" && (badge as any).color ? (badge as any).color : "primary"}`}>
+      {typeof badge === "object" ? (badge as any).text : String(badge)}
+    </span>
+  )}
           </div>
           {subtitle && <span className="db-section-subtitle">{subtitle}</span>}
         </div>

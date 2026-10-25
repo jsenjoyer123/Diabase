@@ -1,7 +1,8 @@
 import type { FC } from 'react'
 import type { TagCloudProps } from '@diabase/protocol'
 
-export const TagCloud: FC<TagCloudProps> = ({ title, tags }) => {
+export const TagCloud: FC<TagCloudProps> = ({ title, tags = [] }) => {
+  const safeTags = tags || [];
   return (
     <div className="db-card" style={{ padding: '1rem' }}>
       {title && (
@@ -11,13 +12,13 @@ export const TagCloud: FC<TagCloudProps> = ({ title, tags }) => {
       )}
 
       <div className="db-tagcloud">
-        {tags.map((tag, idx) => (
+        {safeTags.map((tag: any, idx) => (
           <span
             key={idx}
             className={`db-badge db-badge-${tag.color || 'primary'}`}
             style={{ fontSize: '0.825rem', padding: '0.35rem 0.75rem', gap: '0.4rem' }}
           >
-            <span>{tag.name}</span>
+            <span>{tag.name || tag.label}</span>
             {tag.count !== undefined && (
               <span
                 style={{

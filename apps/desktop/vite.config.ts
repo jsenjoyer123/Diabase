@@ -50,6 +50,9 @@ function repoApiPlugin(): Plugin {
 }
 
 export default defineConfig({
+  define: {
+    "process.env": {},
+  },
   plugins: [react(), repoApiPlugin()],
   root: path.resolve(__dirname),
   server: {
