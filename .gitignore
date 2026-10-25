@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.DS_Store
+.env
+.env.*
+!.env.example
+# Diabase runtime caches inside vaults (compiled plugin bundles, indexes)
+.diabase/cache/
+# Scratch vaults created by tests / dev runs
+.tmp/

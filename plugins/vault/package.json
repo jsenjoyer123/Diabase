@@ -1,0 +1,14 @@
+{
+  "name": "@diabase/plugin-vault",
+  "version": "0.0.0",
+  "private": true,
+  "description": "[main] Vault service: guarded atomic file IO, frontmatter edits, typed watcher",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@diabase/protocol": "*"
+  }
+}

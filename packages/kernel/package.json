@@ -1,0 +1,15 @@
+{
+  "name": "@diabase/kernel",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cordis kernel integration: context typing, IPC service bridge, plugin loader, DOM/React effect helpers",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@diabase/protocol": "*",
+    "cordis": "4.0.0-rc.12"
+  }
+}

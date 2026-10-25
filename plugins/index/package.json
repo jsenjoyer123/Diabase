@@ -1,0 +1,14 @@
+{
+  "name": "@diabase/plugin-index",
+  "version": "0.0.0",
+  "private": true,
+  "description": "[main] Incremental link/tag/frontmatter index and structured note queries",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@diabase/protocol": "*"
+  }
+}

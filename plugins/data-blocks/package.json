@@ -1,0 +1,14 @@
+{
+  "name": "@diabase/plugin-data-blocks",
+  "version": "0.0.0",
+  "private": true,
+  "description": "[renderer] Generic query-backed blocks: table, list, cards, stat, chart, properties",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@diabase/protocol": "*"
+  }
+}

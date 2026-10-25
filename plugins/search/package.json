@@ -1,0 +1,14 @@
+{
+  "name": "@diabase/plugin-search",
+  "version": "0.0.0",
+  "private": true,
+  "description": "[main] Full-text search (BM25) and fuzzy quick-open",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@diabase/protocol": "*"
+  }
+}

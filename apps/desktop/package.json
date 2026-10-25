@@ -1,0 +1,13 @@
+{
+  "name": "@diabase/desktop",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Electron app shell: boots the main and renderer Cordis contexts",
+  "license": "MIT",
+  "type": "module",
+  "main": "./out/main/index.js",
+  "dependencies": {
+    "@diabase/protocol": "*",
+    "@diabase/kernel": "*"
+  }
+}
