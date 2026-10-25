@@ -13,10 +13,13 @@ import type {
   VaultService,
 } from '@diabase/protocol'
 import type { PluginLoaderService } from './loader-types.ts'
+import type { BridgeStatus } from './bridge/index.ts'
 
 export * from 'cordis'
 export { Context as default } from 'cordis'
 export type * from './loader-types.ts'
+export * from './remote.ts'
+export * from './bridge/index.ts'
 
 /** Kernel-owned events, merged into Cordis `Events` next to `DiabaseEvents`. */
 export interface KernelEvents {
@@ -26,6 +29,8 @@ export interface KernelEvents {
    * active later, do not emit it; `ctx.loader.list()` always reflects them.
    */
   'loader/changed'(): void
+  /** An IPC bridge connected, disconnected, or one of its services went up or down. */
+  'bridge/status'(status: BridgeStatus): void
 }
 
 declare module 'cordis' {
