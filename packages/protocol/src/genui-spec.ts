@@ -33,7 +33,7 @@ export const StatPropsSchema = z.object({
     .optional()
     .describe('Change or trend indicator'),
   icon: z.string().optional().describe('Icon identifier: code, file, git-branch, git-commit, alert-circle, check-circle, zap, layers, cpu, activity, book, tag'),
-  color: z.enum(['primary', 'secondary', 'success', 'warning', 'danger', 'info']).default('primary'),
+  color: z.enum(['primary', 'secondary', 'success', 'warning', 'danger', 'info']).default('primary').optional(),
 })
 export type StatProps = z.infer<typeof StatPropsSchema>
 
@@ -179,7 +179,7 @@ export const SectionPropsSchema = z.object({
 export type SectionProps = z.infer<typeof SectionPropsSchema>
 
 export const CalloutPropsSchema = z.object({
-  kind: z.enum(['info', 'warning', 'success', 'danger', 'tip']).default('info'),
+  kind: z.enum(['info', 'warning', 'success', 'danger', 'tip']).default('info').optional(),
   title: z.string().optional(),
   message: z.string(),
 })
@@ -187,7 +187,7 @@ export type CalloutProps = z.infer<typeof CalloutPropsSchema>
 
 export const BadgePropsSchema = z.object({
   text: z.string(),
-  color: z.enum(['primary', 'secondary', 'success', 'warning', 'danger', 'info']).default('primary'),
+  color: z.enum(['primary', 'secondary', 'success', 'warning', 'danger', 'info']).default('primary').optional(),
 })
 export type BadgeProps = z.infer<typeof BadgePropsSchema>
 

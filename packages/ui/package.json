@@ -9,6 +9,8 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@diabase/protocol": "*"
+    "@diabase/protocol": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }
