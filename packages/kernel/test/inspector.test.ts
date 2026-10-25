@@ -70,28 +70,49 @@ describe('kernel inspector', () => {
     expect(findFiber(snapshot.root, consumerUid)?.state).toBe('disposed')
   })
 
-  it('returns a structured-clone-safe fiber tree with states, services, and events', async () => {
+  it('returns a clone-safe tree with nested fibers, services, and event effects', async () => {
     const root = new Context()
     await root.plugin(Inspector)
-    const plugin = root.plugin({
-      name: 'observed-plugin',
+    let nestedUid: number | null = null
+    const parent = root.plugin({
+      name: 'observed-parent',
       apply(ctx: Context) {
         ctx.provide('observed-service', { value: 1 })
         ctx.on('index/ready', () => {})
+        nestedUid = ctx.plugin({
+          name: 'nested-observer',
+          apply(childCtx: Context) {
+            childCtx.provide('nested-service', { value: 2 })
+            childCtx.on('vault/changed', () => {})
+          },
+        }).uid
       },
     })
-    await plugin
+    await parent
+    await flush()
 
     const snapshot = root.inspector.snapshot()
+    const parentFiber = findFiber(snapshot.root, parent.uid!)
+    const nestedFiber = findFiber(snapshot.root, nestedUid!)
+    expect(snapshot.root.uid).toBe(0)
+    expect(parent.uid).toBeGreaterThan(snapshot.root.uid)
+    expect(nestedUid).not.toBe(parent.uid)
     expect(() => structuredClone(snapshot)).not.toThrow()
-    const observed = findFiber(snapshot.root, plugin.uid!)
-    expect(observed?.state).toBe('active')
-    expect(observed?.services).toContain('observed-service')
-    expect(snapshot.services.map(({ name }) => name)).toContain('observed-service')
+    expect(parentFiber?.state).toBe('active')
+    expect(parentFiber?.services).toContain('observed-service')
+    expect(parentFiber?.children).toContainEqual(expect.objectContaining({ uid: nestedUid }))
+    expect(nestedFiber?.state).toBe('active')
+    expect(nestedFiber?.services).toContain('nested-service')
+    expect(snapshot.services.map(({ name }) => name)).toEqual(expect.arrayContaining(['observed-service', 'nested-service']))
     expect(snapshot.events).toContainEqual({
       name: 'index/ready',
       listeners: 1,
-      fibers: [plugin.uid],
+      fibers: [parent.uid],
+    })
+    expect(snapshot.events).toContainEqual({
+      name: 'vault/changed',
+      listeners: 1,
+      fibers: [nestedUid],
     })
   })
 })

@@ -1,5 +1,4 @@
-import { Context, Service } from 'cordis'
-import type { EffectMeta, Fiber } from 'cordis'
+import type { Context, EffectMeta, Fiber } from './index.ts'
 
 /** Cordis fiber lifecycle state rendered as a stable, serializable string. */
 export type InspectorFiberState = 'pending' | 'loading' | 'active' | 'failed' | 'disposed' | 'unloading'
@@ -65,16 +64,15 @@ interface SeenFiber {
  * In particular, it does not subscribe to Cordis internal events or read the
  * `committed` implementation detail.
  */
-export class Inspector extends Service<InspectorService> implements InspectorService {
+class InspectorSnapshotter implements InspectorService {
   private readonly root: Context
   private readonly fiberIds = new WeakMap<Fiber, number>()
   private readonly seen = new Map<number, SeenFiber>()
   private readonly disposed = new Map<number, InspectorFiber>()
   private readonly disposedParents = new Map<number, number>()
 
-  constructor(ctx: Context) {
-    super(ctx, 'inspector')
-    this.root = ctx[Context.root]
+  constructor(root: Context) {
+    this.root = root
   }
 
   snapshot(): InspectorSnapshot {
@@ -221,5 +219,9 @@ export class Inspector extends Service<InspectorService> implements InspectorSer
 }
 
 export function inspector(ctx: Context): void {
-  ctx.plugin(Inspector)
+  let fiber = ctx.fiber
+  while (fiber.parent.fiber !== fiber) fiber = fiber.parent.fiber
+  ctx.provide('inspector', new InspectorSnapshotter(fiber.ctx))
 }
+
+export { inspector as Inspector }
